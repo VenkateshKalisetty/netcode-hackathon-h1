@@ -1,10 +1,7 @@
 const { DataTypes, Sequelize } = require("sequelize");
-const { DB_DIALECT, DB_STORAGE_PATH } = require("../config");
+const { SEQUELIZE_OPTIONS } = require("../config");
 
-const sequelize = new Sequelize({
-    dialect: DB_DIALECT,
-    storage: DB_STORAGE_PATH,
-});
+const sequelize = new Sequelize(SEQUELIZE_OPTIONS);
 
 const ChatRoom = sequelize.define(
     "ChatRooms",

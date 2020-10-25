@@ -9,11 +9,11 @@ const addChatRoom = async (req, res) => {
             owner_id: req.user.id,
         };
         if (await isNewChatRoomName(chatRoom.name)) {
-            const { dataValues } = (await ChatRoom.create(chatRoom, {}));
+            const { dataValues } = await ChatRoom.create(chatRoom, {});
             Response.created(res, {
                 id: dataValues.id,
                 name: dataValues.name,
-                ownerId: dataValues.owner_id
+                ownerId: dataValues.owner_id,
             });
         } else {
             Response.badRequest(res, {
@@ -27,8 +27,18 @@ const addChatRoom = async (req, res) => {
     }
 };
 
+const getChatRooms = async (req, res) => {
+    try {
+        Response.ok(res, await ChatRoom.findAll());
+    } catch {
+        Response.internalServerErr(res, {
+            msg: "Error occured while adding Chat Room!",
+        });
+    }
+};
+
 const isNewChatRoomName = async (chatRoomName) => {
     return (await ChatRoom.findOne({ where: { name: chatRoomName } })) == null;
 };
 
-module.exports = { addChatRoom };
+module.exports = { addChatRoom, getChatRooms };
