@@ -29,12 +29,13 @@ const addChatRoom = async (req, res) => {
 
 const getChatRooms = async (req, res) => {
     try {
-        const chatRooms = (await ChatRoom.findAll())
-            .map(cr => ({
+        const chatRooms = (await ChatRoom.findAll({ order: [["name"]] })).map(
+            (cr) => ({
                 id: cr.id,
                 name: cr.name,
-                ownerId: cr.owner_id
-            }));
+                ownerId: cr.owner_id,
+            })
+        );
         Response.ok(res, chatRooms);
     } catch {
         Response.internalServerErr(res, {
