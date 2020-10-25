@@ -29,7 +29,13 @@ const addChatRoom = async (req, res) => {
 
 const getChatRooms = async (req, res) => {
     try {
-        Response.ok(res, await ChatRoom.findAll());
+        const chatRooms = (await ChatRoom.findAll())
+            .map(cr => ({
+                id: cr.id,
+                name: cr.name,
+                ownerId: cr.owner_id
+            }));
+        Response.ok(res, chatRooms);
     } catch {
         Response.internalServerErr(res, {
             msg: "Error occured while adding Chat Room!",
