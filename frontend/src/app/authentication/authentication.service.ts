@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API_URL, TOKEN_NAME } from '../constants';
-import { IUser } from '../user/manage-users/manage-users.component';
+import { API_URL, TOKEN_NAME } from "../constants";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthenticationService {
   constructor(private httpClient: HttpClient) {}
@@ -28,7 +27,7 @@ export class AuthenticationService {
     return data ? data.jwtToken : null;
   }
 
-  getUser(): IUser {
+  getUser(): any {
     const data = JSON.parse(localStorage.getItem(TOKEN_NAME));
     return data ? data.user : {};
   }

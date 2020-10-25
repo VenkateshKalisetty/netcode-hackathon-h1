@@ -8,7 +8,6 @@ import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { ChatComponent } from "./chat-room/chat/chat.component";
 import { ManageRoomComponent } from "./chat-room/manage-room/manage-room.component";
-import { ManageUsersComponent } from './user/manage-users/manage-users.component';
 
 const routes: Routes = [
   {
@@ -31,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: "**",
-    redirectTo: "/users",
+    redirectTo: "/rooms",
     pathMatch: "full",
   },
 ];

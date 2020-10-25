@@ -1,0 +1,42 @@
+.container {
+    mat-card {
+        width: 100%;
+
+        mat-card-header {
+            mat-card-title {
+                mat-icon {
+                    vertical-align: middle;
+                }
+            }
+        }
+
+        mat-card-content {
+            height: 75vh;
+            max-height: 75vh;
+            overflow-y: scroll;
+
+            .msg-box {
+                padding: 1em;
+                border-radius: 1em;
+            }
+
+            .receiver {
+                background-color: #5f9ea0;
+            }
+
+            .sender {
+                background-color: cornflowerblue;
+            }
+
+            .text {
+                color: #ffffff;
+            }
+        }
+
+        mat-card-actions {
+            mat-form-field {
+                width: 100%;
+            }
+        }
+    }
+}
