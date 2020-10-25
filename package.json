@@ -1,0 +1,17 @@
+{
+  "name": "wd_h1-server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start:dev": "nodemon --inspect --ignore 'front-end/' server.js",
+    "build:prod:run": "cd front-end && npm run build && cd.. && node server.js",
+    "start": "npm install && cd front-end && npm install && npm run build && cd .. && node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "sequelize": "^6.3.3",
+    "sqlite3": "^5.0.0"
+  }
+}
