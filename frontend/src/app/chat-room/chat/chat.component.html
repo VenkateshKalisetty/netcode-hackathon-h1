@@ -2,9 +2,9 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <mat-card>
-                <mat-card-header>
+                <mat-card-header class="justify-content-between" style="display: flex;">
                     <mat-card-title><mat-icon>question_answer</mat-icon>Venky</mat-card-title>
-                    <mat-card-subtitle></mat-card-subtitle>
+                    <button mat-flat-button class="btn" color="accent" (click)="router.navigate(['rooms'])">back</button>
                 </mat-card-header>
                 <mat-card-content>
                     <div class="row justify-content-start m-2">

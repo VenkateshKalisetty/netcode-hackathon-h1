@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from "@angular/forms";
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,14 +9,27 @@ import { Router } from '@angular/router';
 })
 export class ManageRoomComponent implements OnInit {
   displayedColumns: string[] = ["sno", "name", "action"];
-  dataSource: any[] = ROOMS_DATA;
+  dataSource: IRoom[] = ROOMS_DATA;
+  showAddUser: boolean = false;
+  newUser: FormControl = new FormControl("");
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
   navigateToRoom(room: IRoom) {
-    this.router.navigate(['chat']);
+    this.router.navigate(["chat"]);
+  }
+
+  addNewChatRoom() {
+    this.showAddUser = !this.showAddUser;
+    console.log(this.newUser.value);
+  }
+
+  deleteChatRoom(room: IRoom) {
+    const index = this.dataSource.findIndex((v) => v.id === room.id);
+    this.dataSource.splice(index, 1);
+    this.dataSource = this.dataSource.slice();
   }
 }
 

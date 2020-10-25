@@ -1,8 +1,16 @@
 <div class="container mt-3">
     <div class="row justify-content-center">
         <div class="col-8 justify-content-between" style="display: flex;">
-          <h2>Manage Users</h2>
-          <button mat-raised-button class="logout" color="warn">Logout</button>
+          <button mat-raised-button class="btn" color="accent" matTooltip="Add new chat room" (click)="addNewChatRoom()"><mat-icon>add</mat-icon></button>
+          <ng-container *ngIf="!showAddUser; else addUserForm">
+            <h2>Chat Rooms</h2>
+          </ng-container>
+          <ng-template #addUserForm>
+            <mat-form-field>
+              <input matInput type="text" placeholder="Add new room" [formControl]="newUser">
+            </mat-form-field>
+          </ng-template>
+          <button mat-raised-button class="btn" color="warn">Logout</button>
       </div>
     </div>
     <div class="row justify-content-center mt-2">
@@ -18,14 +26,14 @@
                 <!-- Room Name Column -->
                 <ng-container matColumnDef="name">
                   <th mat-header-cell *matHeaderCellDef> Name </th>
-                  <td mat-cell *matCellDef="let element" (click)="navigateToRoom(element)"> {{element.name}} </td>
+                  <td mat-cell *matCellDef="let element" style="cursor: pointer;" (click)="navigateToRoom(element)"> {{element.name}} </td>
                 </ng-container>
 
                 <!-- Action -->
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef> Upgrade </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-mini-fab color="warn">
+                        <button mat-icon-button color="warn" (click)="deleteChatRoom(element)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>

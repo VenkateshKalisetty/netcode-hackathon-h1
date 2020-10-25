@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from "@angular/material/table";
 import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [ManageRoomComponent, ChatComponent],
@@ -17,10 +18,12 @@ import { MatIconModule } from "@angular/material/icon";
     MatCardModule,
     MatFormFieldModule,
     FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
     MatTableModule,
     MatIconModule,
+    MatTooltipModule,
   ],
 })
 export class ChatRoomModule {}
