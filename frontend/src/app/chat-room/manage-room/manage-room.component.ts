@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ChatRoomService } from '../chat-room.service';
@@ -13,7 +13,7 @@ export class ManageRoomComponent implements OnInit {
   displayedColumns: string[] = ["sno", "name", "action"];
   dataSource: IRoom[] = [];
   showAddUser: boolean = false;
-  newUser: FormControl = new FormControl("", [Validators.required]);
+  newUser: FormControl = new FormControl("");
 
   constructor(
     private router: Router,
@@ -46,7 +46,7 @@ export class ManageRoomComponent implements OnInit {
   }
 
   addNewChatRoom() {
-    if(this.newUser.valid) {
+    if(this.newUser.valid && this.newUser.value) {
       this.chatService.addNewChatRoom(this.newUser.value).subscribe(
         (res) => {
           this.showAddUser = false;
