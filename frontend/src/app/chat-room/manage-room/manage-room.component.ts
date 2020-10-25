@@ -66,21 +66,25 @@ export class ManageRoomComponent implements OnInit {
   }
 
   deleteChatRoom(room: IRoom) {
+    let msg = "";
     this.chatService.deleteChatRoom(room.id).subscribe(
       (res) => {
+        msg = "Chat Room deleted";
         const index = this.dataSource.findIndex((v) => v.id === room.id);
         this.dataSource.splice(index, 1);
         this.dataSource = this.dataSource.slice();
       },
       (err) => {
         console.log(err);
-        this.snackBar.open(err.error.msg, '', {
+        msg = err.error.msg;
+      },
+      () => 
+        this.snackBar.open(msg, "", {
           duration: 5000,
-          horizontalPosition: 'end',
-          verticalPosition: 'bottom'
-        });
-      }
-    )
+          horizontalPosition: "end",
+          verticalPosition: "bottom",
+        })
+    );
   }
 }
 

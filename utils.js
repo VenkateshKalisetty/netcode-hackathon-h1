@@ -3,6 +3,7 @@ const StatusCodes = {
     // 2xx Success
     ok: 200,
     created: 201,
+    deleted: 202,
     noContent: 204,
 
     // 4xx Client Error
@@ -23,6 +24,11 @@ class Response {
     static created(res, data = null) {
         data ? res.status(StatusCodes.created).send(data)
             : res.status(StatusCodes.created).end();
+    }
+
+    static deleted(res, data = null) {
+        data ? res.status(StatusCodes.deleted).send(data)
+            : res.status(StatusCodes.deleted).end();
     }
 
     static noContent(res) {

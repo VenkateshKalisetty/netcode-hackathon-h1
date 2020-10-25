@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const ChatRoom = require("../models/chat_room");
 const Message = require("../models/message");
 
@@ -10,7 +11,7 @@ const addChatRoom = async (req, res) => {
             name: chatRoomBody.name,
             owner_id: req.user.id,
         };
-        if (await !isChatRoomExists({ name: chatRoomBody.name })) {
+        if (await isChatRoomExists({ name: chatRoomBody.name, id: -1 })) {
             const { dataValues } = await ChatRoom.create(chatRoom, {});
             Response.created(res, {
                 id: dataValues.id,
@@ -49,9 +50,14 @@ const getChatRooms = async (req, res) => {
 const deleteChatRoom = async (req, res) => {
     try {
         const { id } = req.params;
-        if (isChatRoomExists({ id })) {
+        if (isChatRoomExists({ id, name: null })) {
             await Message.destroy({ where: { chat_room_id: id } });
             await ChatRoom.destroy({ where: { id } });
+            Response.deleted(res);
+        } else {
+            Response.badRequest(res, {
+                msg: "Chat Room not found!",
+            });
         }
     } catch (ex) {
         Response.internalServerErr(res, {
@@ -64,8 +70,12 @@ const isChatRoomExists = async (chatRoom) => {
     const { name, id } = chatRoom;
     return (
         (await ChatRoom.findOne({
-            where: { $or: [{ name }, { id }] },
-        })) != null
+            where: {
+                [Op.or]: [
+                    { name: { [Op.eq]: name } }, { id: { [Op.eq]: id } }
+                ]
+            },
+        })) == null
     );
 };
 
