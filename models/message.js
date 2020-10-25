@@ -21,15 +21,24 @@ const Message = sequelize.define(
         sent_by: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: "user",
+                key: "id",
+            },
         },
         chat_room_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: "chat_room",
+                key: "id",
+            },
         },
     },
     {
         tableName: "message",
         modelName: "Messages",
+        timestamps: false,
     }
 );
 

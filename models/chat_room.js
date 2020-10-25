@@ -17,15 +17,21 @@ const ChatRoom = sequelize.define(
         name: {
             type: DataTypes.STRING(50),
             allowNull: false,
+            unique: true,
         },
         owner_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: "user",
+                key: "id",
+            },
         },
     },
     {
         tableName: "chat_room",
         modelName: "ChatRooms",
+        timestamps: false,
     }
 );
 

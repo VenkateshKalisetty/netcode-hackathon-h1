@@ -13,9 +13,9 @@ export class ManageRoomComponent implements OnInit {
   showAddUser: boolean = false;
   newUser: FormControl = new FormControl("");
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   navigateToRoom(room: IRoom) {
     this.router.navigate(["chat"]);
@@ -23,7 +23,6 @@ export class ManageRoomComponent implements OnInit {
 
   addNewChatRoom() {
     this.showAddUser = !this.showAddUser;
-    console.log(this.newUser.value);
   }
 
   deleteChatRoom(room: IRoom) {
