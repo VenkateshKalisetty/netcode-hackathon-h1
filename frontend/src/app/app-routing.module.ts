@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {
-  AuthGuardService,
-  SignInGuardService,
-} from './authentication/auth-guard.service';
+import { AuthGuard, SignInGuard } from "./authentication/auth-guard.service";
 import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { ChatComponent } from "./chat-room/chat/chat.component";
@@ -13,20 +10,22 @@ const routes: Routes = [
   {
     path: "signin",
     component: SignInComponent,
-    canActivate: [SignInGuardService],
+    canActivate: [SignInGuard],
   },
   {
     path: "signup",
     component: SignUpComponent,
-    canActivate: [SignInGuardService],
+    canActivate: [SignInGuard],
   },
   {
     path: "rooms",
     component: ManageRoomComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: "chat",
     component: ChatComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: "**",

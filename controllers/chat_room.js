@@ -22,7 +22,7 @@ const addChatRoom = async (req, res) => {
         }
     } catch (ex) {
         Response.internalServerErr(res, {
-            msg: "Error occured while adding Chat Room!",
+            msg: "Failed to get Chat Rooms!",
         });
     }
 };

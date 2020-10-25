@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ChatRoomService } from '../chat-room.service';
 
 @Component({
   selector: "app-manage-room",
@@ -9,43 +11,81 @@ import { Router } from '@angular/router';
 })
 export class ManageRoomComponent implements OnInit {
   displayedColumns: string[] = ["sno", "name", "action"];
-  dataSource: IRoom[] = ROOMS_DATA;
+  dataSource: IRoom[] = [];
   showAddUser: boolean = false;
-  newUser: FormControl = new FormControl("");
+  newUser: FormControl = new FormControl("", [Validators.required]);
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private chatService: ChatRoomService,
+    private snackBar: MatSnackBar
+  ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getAllChatRooms();
+  }
 
   navigateToRoom(room: IRoom) {
     this.router.navigate(["chat"]);
   }
 
+  getAllChatRooms() {
+    this.chatService.getAllChatRoomsData().subscribe(
+      (res) => {
+        this.dataSource = res;
+      },
+      (err) => {
+        console.log(err);
+          this.snackBar.open(err.error.msg, '', {
+            duration: 5000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom'
+          });
+      }
+    )
+  }
+
   addNewChatRoom() {
-    this.showAddUser = !this.showAddUser;
+    if(this.newUser.valid) {
+      this.chatService.addNewChatRoom(this.newUser.value).subscribe(
+        (res) => {
+          this.showAddUser = false;
+          this.newUser.setValue('');
+          this.dataSource = [res, ...this.dataSource];
+        },
+        (err) => {
+          console.log(err);
+          this.snackBar.open(err.error.msg, '', {
+            duration: 5000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom'
+          });
+        }
+      )
+    }
   }
 
   deleteChatRoom(room: IRoom) {
-    const index = this.dataSource.findIndex((v) => v.id === room.id);
-    this.dataSource.splice(index, 1);
-    this.dataSource = this.dataSource.slice();
+    this.chatService.deleteChatRoom(room.id).subscribe(
+      (res) => {
+        const index = this.dataSource.findIndex((v) => v.id === room.id);
+        this.dataSource.splice(index, 1);
+        this.dataSource = this.dataSource.slice();
+      },
+      (err) => {
+        console.log(err);
+        this.snackBar.open(err.error.msg, '', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom'
+        });
+      }
+    )
   }
 }
 
 export interface IRoom {
   id: number;
   name: string;
+  ownerId: number;
 }
-
-const ROOMS_DATA: IRoom[] = [
-  { id: 1, name: "room1" },
-  { id: 2, name: "room2" },
-  { id: 3, name: "room3" },
-  { id: 4, name: "room4" },
-  { id: 5, name: "room5" },
-  { id: 6, name: "room6" },
-  { id: 7, name: "room7" },
-  { id: 8, name: "room8" },
-  { id: 9, name: "room9" },
-  { id: 10, name: "room10" },
-];

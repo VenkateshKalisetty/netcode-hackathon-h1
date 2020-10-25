@@ -1,16 +1,14 @@
 import {
+  HttpErrorResponse,
+  HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpEvent,
-  HttpResponse,
-  HttpErrorResponse,
-} from '@angular/common/http';
+} from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { TOKEN_NAME } from '../constants';
+import { Observable, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({

@@ -1,13 +1,15 @@
 <div class="container mt-3">
     <div class="row justify-content-center">
         <div class="col-8 justify-content-between" style="display: flex;">
-          <button mat-raised-button class="btn" color="accent" matTooltip="Add new chat room" (click)="addNewChatRoom()"><mat-icon>add</mat-icon></button>
+          <button mat-raised-button class="btn" color="accent" matTooltip="Add new chat room" (click)="showAddUser = !showAddUser"><mat-icon>add</mat-icon></button>
           <ng-container *ngIf="!showAddUser; else addUserForm">
             <h2>Chat Rooms</h2>
           </ng-container>
           <ng-template #addUserForm>
             <mat-form-field>
               <input matInput type="text" placeholder="Add new room" [formControl]="newUser">
+              <mat-icon matSuffix matTooltip="Save chat room" (click)="addNewChatRoom()">save</mat-icon>
+              <mat-error *ngIf="newUser.hasError('required')">Required</mat-error>
             </mat-form-field>
           </ng-template>
           <button mat-raised-button class="btn" color="warn">Logout</button>

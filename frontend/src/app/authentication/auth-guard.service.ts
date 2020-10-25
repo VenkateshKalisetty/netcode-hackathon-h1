@@ -1,17 +1,11 @@
-import { ThrowStmt } from '@angular/compiler';
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Injectable } from "@angular/core";
+import { CanActivate, Router } from "@angular/router";
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-export class AuthGuardService implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthenticationService,
     private router: Router
@@ -19,7 +13,7 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(): boolean {
     if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['signin']);
+      this.router.navigate(["signin"]);
       return false;
     }
     return true;
@@ -27,9 +21,9 @@ export class AuthGuardService implements CanActivate {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-export class SignInGuardService implements CanActivate {
+export class SignInGuard implements CanActivate {
   constructor(
     private authService: AuthenticationService,
     private router: Router
@@ -37,7 +31,7 @@ export class SignInGuardService implements CanActivate {
 
   canActivate(): boolean {
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['users']);
+      this.router.navigate(["rooms"]);
       return false;
     }
     return true;

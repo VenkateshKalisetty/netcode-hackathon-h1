@@ -28,7 +28,7 @@ export class SignInComponent implements OnInit {
       this.authService.signin(this.form.value).subscribe(
         (res) => {
           this.authService.setLocalStorage(res);
-          this.router.navigate(['users']);
+          this.router.navigate(["rooms"]);
         },
         (err) => {
           console.log(err);
