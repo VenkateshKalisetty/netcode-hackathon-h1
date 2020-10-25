@@ -1,4 +1,6 @@
 const ChatRoom = require("../models/chat_room");
+const Message = require("../models/message");
+
 const { Response } = require("../utils");
 
 const addChatRoom = async (req, res) => {
@@ -8,7 +10,7 @@ const addChatRoom = async (req, res) => {
             name: chatRoomBody.name,
             owner_id: req.user.id,
         };
-        if (await isNewChatRoomName(chatRoom.name)) {
+        if (await !isChatRoomExists({ name: chatRoomBody.name })) {
             const { dataValues } = await ChatRoom.create(chatRoom, {});
             Response.created(res, {
                 id: dataValues.id,
@@ -22,7 +24,7 @@ const addChatRoom = async (req, res) => {
         }
     } catch (ex) {
         Response.internalServerErr(res, {
-            msg: "Failed to get Chat Rooms!",
+            msg: "Error occured while adding Chat Room!",
         });
     }
 };
@@ -39,13 +41,32 @@ const getChatRooms = async (req, res) => {
         Response.ok(res, chatRooms);
     } catch {
         Response.internalServerErr(res, {
-            msg: "Error occured while adding Chat Room!",
+            msg: "Failed to get Chat Rooms!",
         });
     }
 };
 
-const isNewChatRoomName = async (chatRoomName) => {
-    return (await ChatRoom.findOne({ where: { name: chatRoomName } })) == null;
+const deleteChatRoom = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (isChatRoomExists({ id })) {
+            await Message.destroy({ where: { chat_room_id: id } });
+            await ChatRoom.destroy({ where: { id } });
+        }
+    } catch (ex) {
+        Response.internalServerErr(res, {
+            msg: "Error occured while deleting Chat Room!",
+        });
+    }
 };
 
-module.exports = { addChatRoom, getChatRooms };
+const isChatRoomExists = async (chatRoom) => {
+    const { name, id } = chatRoom;
+    return (
+        (await ChatRoom.findOne({
+            where: { $or: [{ name }, { id }] },
+        })) != null
+    );
+};
+
+module.exports = { addChatRoom, getChatRooms, deleteChatRoom };
