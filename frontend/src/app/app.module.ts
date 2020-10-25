@@ -5,8 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { TokenInterceptorService } from './authentication/token-interceptor.service';
-import { UserModule } from './user/user.module';
+import { TokenInterceptorService } from "./authentication/token-interceptor.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +15,6 @@ import { UserModule } from './user/user.module';
     BrowserAnimationsModule,
     HttpClientModule,
     AuthenticationModule,
-    UserModule,
   ],
   providers: [
     {

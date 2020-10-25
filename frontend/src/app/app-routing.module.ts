@@ -6,28 +6,33 @@ import {
 } from './authentication/auth-guard.service';
 import { SignInComponent } from './authentication/sign-in/sign-in.component';
 import { SignUpComponent } from './authentication/sign-up/sign-up.component';
+import { ChatComponent } from "./chat-room/chat/chat.component";
+import { ManageRoomComponent } from "./chat-room/manage-room/manage-room.component";
 import { ManageUsersComponent } from './user/manage-users/manage-users.component';
 
 const routes: Routes = [
   {
-    path: 'signin',
+    path: "signin",
     component: SignInComponent,
     canActivate: [SignInGuardService],
   },
   {
-    path: 'signup',
+    path: "signup",
     component: SignUpComponent,
     canActivate: [SignInGuardService],
   },
   {
-    path: 'users',
-    component: ManageUsersComponent,
-    canActivate: [AuthGuardService],
+    path: "rooms",
+    component: ManageRoomComponent,
   },
   {
-    path: '**',
-    redirectTo: '/users',
-    pathMatch: 'full',
+    path: "chat",
+    component: ChatComponent,
+  },
+  {
+    path: "**",
+    redirectTo: "/users",
+    pathMatch: "full",
   },
 ];
 
