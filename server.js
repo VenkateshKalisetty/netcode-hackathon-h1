@@ -23,6 +23,16 @@ app.use("/*", (req, res) => {
     res.sendFile(path.join(__dirname, "./front-end/dist/wd-h1-ui/index.html"));
 });
 
-app.listen(PORT, () => {
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+io.on('connection', (socket) => {
+    console.log("a user connected.");
+    socket.on('disconnect', () => {
+        console.log("a user disconnected.");
+    })
+})
+
+http.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -26,7 +26,7 @@ export class ManageRoomComponent implements OnInit {
   }
 
   navigateToRoom(room: IRoom) {
-    this.router.navigate(["chat"]);
+    this.router.navigate(["chat", room.id, room.name]);
   }
 
   getAllChatRooms() {

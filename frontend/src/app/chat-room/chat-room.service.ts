@@ -21,4 +21,12 @@ export class ChatRoomService {
   deleteChatRoom(id: number): Observable<any> {
     return this.httpClient.delete(`${API_URL}/chat-room/${id}`);
   }
+
+  saveMsg(msg: string, chatRoomId: number): Observable<any> {
+    return this.httpClient.post(`${API_URL}/message`, {msg, chatRoomId});
+  }
+
+  getRoomMessages(chatRoomId: number): Observable<any> {
+    return this.httpClient.get(`${API_URL}/message/${chatRoomId}`);
+  }
 }

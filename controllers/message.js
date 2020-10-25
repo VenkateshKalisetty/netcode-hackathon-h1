@@ -10,7 +10,7 @@ const addMessage = async (req, res) => {
             sent_by: req.user.id,
             chat_room_id: msgBody.chatRoomId,
         };
-        if (!isChatRoomExists)
+        if (!isChatRoomExists(msg.chat_room_id))
             return Response.badRequest(res, { msg: "Chat Room not found!" });
         await Message.create(msg);
         Response.created(res);
@@ -22,8 +22,33 @@ const addMessage = async (req, res) => {
     }
 };
 
-const isChatRoomExists = async (userId) => {
-    return (await ChatRoom.findOne({ where: { id: userId } })) != null;
+const getMessages = async (req, res) => {
+    try {
+        const { chatRoomId } = req.params;
+        if (isChatRoomExists(chatRoomId)) {
+            const messages = (
+                await Message.findAll({ where: { chat_room_id: chatRoomId } })
+            ).map((m) => ({
+                id: m.id,
+                msg: m.msg,
+                sentBy: m.sent_by,
+            }));
+            Response.ok(res, messages);
+        } else {
+            Response.badRequest(res, {
+                msg: "Chat Room not found!",
+            });
+        }
+    } catch (ex) {
+        Response.internalServerErr(res, {
+            msg: "Failed to get messages!",
+            data: ex.message,
+        });
+    }
 };
 
-module.exports = { addMessage };
+const isChatRoomExists = async (chatRoomId) => {
+    return (await ChatRoom.findOne({ where: { id: chatRoomId } })) != null;
+};
+
+module.exports = { addMessage, getMessages };

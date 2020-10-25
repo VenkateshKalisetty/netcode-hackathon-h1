@@ -3,33 +3,31 @@
         <div class="col-8">
             <mat-card>
                 <mat-card-header class="justify-content-between" style="display: flex;">
-                    <mat-card-title><mat-icon>question_answer</mat-icon>Venky</mat-card-title>
+                    <mat-card-title><mat-icon>question_answer</mat-icon>{{ roomName }}</mat-card-title>
                     <button mat-flat-button class="btn" color="accent" (click)="router.navigate(['rooms'])">back</button>
                 </mat-card-header>
-                <mat-card-content>
-                    <div class="row justify-content-start m-2">
-                        <div class="col-8 align-self-start msg-box receiver">
-                            <span class="text p-1">
-                                Receiver message Receiver messageReceiver message
-                                Receiver messageReceiver messageReceiver messageReceiver message<br>
-                                Receiver messageReceiver messageReceiver messageReceiver message
-                            </span>
+                <mat-card-content #scrollMe [scrollTop]="scrollMe.scrollHeight">
+                    <ng-container *ngFor="let msg of messages">
+                        <div class="row justify-content-start m-2" *ngIf="msg.sentBy != loggedInUserId;">
+                            <div class="col-8 align-self-start msg-box receiver">
+                                <span class="text p-1">
+                                    {{ msg.msg }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-end m-2">
-                        <div class="col-8 align-self-end msg-box sender">
-                            <span class="text p-1">
-                                Receiver message Receiver messageReceiver message
-                                <br>
-                                Receiver messageReceiver messageReceiver messageReceiver message
-                            </span>
+                        <div class="row justify-content-end m-2" *ngIf="msg.sentBy == loggedInUserId">
+                            <div class="col-8 align-self-end msg-box sender">
+                                <span class="text p-1">
+                                    {{ msg.msg }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    </ng-container>
                 </mat-card-content>
                 <mat-card-actions>
                     <mat-form-field class="example-full-width">
-                        <input type="text" matInput placeholder="Enter message.....">
-                        <mat-icon matSuffix>send</mat-icon>
+                        <input type="text" autocomplete="off" [formControl]="msgCtrl" (keyup.enter)="sendMsg()" matInput placeholder="Enter message.....">
+                        <mat-icon matSuffix (click)="sendMsg()">send</mat-icon>
                     </mat-form-field>
                 </mat-card-actions>
             </mat-card>
