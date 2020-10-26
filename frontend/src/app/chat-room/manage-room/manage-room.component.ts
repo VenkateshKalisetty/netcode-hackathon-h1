@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { ChatRoomService } from '../chat-room.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class ManageRoomComponent implements OnInit {
   constructor(
     private router: Router,
     private chatService: ChatRoomService,
+    private authService: AuthenticationService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -85,6 +87,11 @@ export class ManageRoomComponent implements OnInit {
           verticalPosition: "bottom",
         })
     );
+  }
+
+  logout() {
+    this.authService.removeToken();
+    this.router.navigate(['signin']);
   }
 }
 

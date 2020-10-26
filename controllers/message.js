@@ -2,16 +2,18 @@ const Message = require("../models/message");
 const ChatRoom = require("../models/chat_room");
 const { Response } = require("../utils");
 
-const saveMessage = async (msgBody) => {
+const saveMessage = async (msgBody, user) => {
     try {
         const msg = {
             msg: msgBody.msg,
-            sent_by: msgBody.sentBy,
+            sent_by: user.id,
             chat_room_id: msgBody.chatRoomId,
         };
         // if (!isChatRoomExists(msg.chat_room_id))
         //     return Response.badRequest(res, { msg: "Chat Room not found!" });
         const newMsg = await Message.create(msg);
+        console.log(user)
+        console.log(newMsg.dataValues)
         const savedMsg = {
             msg: newMsg.dataValues.msg,
             sentBy: newMsg.dataValues.sent_by,

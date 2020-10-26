@@ -38,6 +38,7 @@ export class ChatComponent implements OnInit {
             this.socketService.socket.emit('join', this.chatRoomId);
             this.socketService.socket.on(`message`, (message) => {
                 this.msgCtrl.setValue('');
+                console.log(message)
                 this.messages = [...this.messages, message];
             })
         });
@@ -46,9 +47,8 @@ export class ChatComponent implements OnInit {
     sendMsg() {
         if (this.msgCtrl.value && this.chatRoomId != -1) {
             const message = {
-                msg: this.msgCtrl.value,
-                sentBy: this.loggedInUserId,
-                chatRoomId: this.chatRoomId,
+              msg: this.msgCtrl.value,
+              chatRoomId: this.chatRoomId,
             };
             this.socketService.socket.emit('newMessage', message);
         }
@@ -57,6 +57,6 @@ export class ChatComponent implements OnInit {
 
 interface Msg {
   msg: string;
-  sentBy: number;
   chatRoomId: number;
+  sentBy: number;
 }
