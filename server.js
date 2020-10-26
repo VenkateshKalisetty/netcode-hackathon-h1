@@ -31,6 +31,11 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log("a user disconnected.");
     })
+    socket.on('newMessage', (msg) => {
+        console.log(msg);
+        io.emit(msg);
+    })
+
 })
 
 http.listen(PORT, () => {

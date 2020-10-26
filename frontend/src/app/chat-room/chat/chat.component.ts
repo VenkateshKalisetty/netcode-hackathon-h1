@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl } from '@angular/forms';
 import { ChatRoomService } from './../chat-room.service';
 import { AuthenticationService } from './../../authentication/authentication.service';
+import { SocketioService } from './../socketio.service';
 
 @Component({
     selector: "app-chat",
@@ -13,6 +14,7 @@ export class ChatComponent implements OnInit {
     constructor(
         public router: Router,
         private authService: AuthenticationService,
+        private socketService: SocketioService,
         private chatRoomService: ChatRoomService,
         private route: ActivatedRoute
     ) { }
@@ -32,6 +34,7 @@ export class ChatComponent implements OnInit {
                     this.messages = data;
                 });
         });
+        this.socketService.setupSocketConn();
     }
 
     sendMsg() {
@@ -41,6 +44,7 @@ export class ChatComponent implements OnInit {
                 sentBy: this.loggedInUserId,
                 id: -1,
             }
+            this.socketService.socket.emit('newMessage', message);
             this.messages = [...this.messages, message];
             this.chatRoomService
                 .saveMsg(this.msgCtrl.value, this.chatRoomId)
@@ -49,6 +53,15 @@ export class ChatComponent implements OnInit {
                 }, (err) => {
                     console.log(err);
                 })
+            
+            this.socketService.getMessages().subscribe(
+                (res) => {
+                    console.log(res)
+                },
+                (err) => {
+                    console.log(err)
+                }
+            )
         }
     }
 }
