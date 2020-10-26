@@ -2,6 +2,30 @@ const Message = require("../models/message");
 const ChatRoom = require("../models/chat_room");
 const { Response } = require("../utils");
 
+const saveMessage = async (msgBody) => {
+    try {
+        const msg = {
+            msg: msgBody.msg,
+            sent_by: msgBody.sentBy,
+            chat_room_id: msgBody.chatRoomId,
+        };
+        // if (!isChatRoomExists(msg.chat_room_id))
+        //     return Response.badRequest(res, { msg: "Chat Room not found!" });
+        const newMsg = await Message.create(msg);
+        const savedMsg = {
+            msg: newMsg.dataValues.msg,
+            sentBy: newMsg.dataValues.sent_by,
+            chatRoomId: newMsg.dataValues.chat_room_id,
+        };
+        return savedMsg;
+    } catch (ex) {
+        Response.internalServerErr(res, {
+            msg: "Error occured while sending message!",
+            data: ex.message,
+        });
+    }
+};
+
 const addMessage = async (req, res) => {
     try {
         const msgBody = req.body;
@@ -51,4 +75,4 @@ const isChatRoomExists = async (chatRoomId) => {
     return (await ChatRoom.findOne({ where: { id: chatRoomId } })) != null;
 };
 
-module.exports = { addMessage, getMessages };
+module.exports = { addMessage, getMessages, saveMessage };

@@ -27,47 +27,36 @@ export class ChatComponent implements OnInit {
     ngOnInit(): void {
         this.loggedInUserId = this.authService.getUser().id;
         this.route.paramMap.subscribe((params) => {
+            this.socketService.setupSocketConn();
             this.chatRoomId = parseInt(params.get('chatRoomId'));
             this.roomName = params.get('roomName');
             this.chatRoomService.getRoomMessages(this.chatRoomId)
                 .subscribe((data) => {
                     this.messages = data;
                 });
+
+            this.socketService.socket.emit('join', this.chatRoomId);
+            this.socketService.socket.on(`message`, (message) => {
+                this.msgCtrl.setValue('');
+                this.messages = [...this.messages, message];
+            })
         });
-        this.socketService.setupSocketConn();
     }
 
     sendMsg() {
         if (this.msgCtrl.value && this.chatRoomId != -1) {
-            const message = { 
+            const message = {
                 msg: this.msgCtrl.value,
                 sentBy: this.loggedInUserId,
-                id: -1,
-            }
+                chatRoomId: this.chatRoomId,
+            };
             this.socketService.socket.emit('newMessage', message);
-            this.messages = [...this.messages, message];
-            this.chatRoomService
-                .saveMsg(this.msgCtrl.value, this.chatRoomId)
-                .subscribe(() => {
-                    this.msgCtrl.setValue('');
-                }, (err) => {
-                    console.log(err);
-                })
-            
-            this.socketService.getMessages().subscribe(
-                (res) => {
-                    console.log(res)
-                },
-                (err) => {
-                    console.log(err)
-                }
-            )
         }
     }
 }
 
 interface Msg {
-    id: number,
-    msg: string,
-    sentBy: number
+  msg: string;
+  sentBy: number;
+  chatRoomId: number;
 }

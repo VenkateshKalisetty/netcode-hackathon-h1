@@ -6,6 +6,7 @@ const msgRouter = require("./routes/message");
 const cors = require("cors");
 const { generateToken } = require("./controllers/auth");
 const { PORT } = require("./config");
+const { saveMessage } = require("./controllers/message");
 require("./db/connection");
 
 const app = express();
@@ -31,9 +32,15 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log("a user disconnected.");
     })
-    socket.on('newMessage', (msg) => {
-        console.log(msg);
-        io.emit(msg);
+    socket.on('newMessage', async (msg) => {
+        await saveMessage(msg)
+        io.to(`room_${msg.chatRoomId}`).emit('message', msg);
+    })
+
+    socket.on('join', (roomId) => {
+        socket.join(`room_${roomId}`, () => {
+            io.to(`room_${roomId}`).emit(`roomid emitted`);
+        })
     })
 
 })
