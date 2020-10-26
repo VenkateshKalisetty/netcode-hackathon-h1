@@ -38,7 +38,6 @@ export class ChatComponent implements OnInit {
             this.socketService.socket.emit('join', this.chatRoomId);
             this.socketService.socket.on(`message`, (message) => {
                 this.msgCtrl.setValue('');
-                console.log(message)
                 this.messages = [...this.messages, message];
             })
         });

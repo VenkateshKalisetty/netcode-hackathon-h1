@@ -9,11 +9,7 @@ const saveMessage = async (msgBody, user) => {
             sent_by: user.id,
             chat_room_id: msgBody.chatRoomId,
         };
-        // if (!isChatRoomExists(msg.chat_room_id))
-        //     return Response.badRequest(res, { msg: "Chat Room not found!" });
         const newMsg = await Message.create(msg);
-        console.log(user)
-        console.log(newMsg.dataValues)
         const savedMsg = {
             msg: newMsg.dataValues.msg,
             sentBy: newMsg.dataValues.sent_by,
