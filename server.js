@@ -16,14 +16,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "./front-end/dist/wd-h1-ui/")));
+app.use(express.static(path.join(__dirname, "./frontend/dist/wd-m1-ui/")));
 
 app.use("/api/auth", generateToken);
 app.use("/api/user", userRouter);
 app.use("/api/chat-room", chatRoomRouter);
 app.use("/api/message", msgRouter);
 app.use("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./front-end/dist/wd-h1-ui/index.html"));
+    res.sendFile(path.join(__dirname, "./frontend/dist/wd-m1-ui/index.html"));
 });
 
 const http = require('http').createServer(app);
