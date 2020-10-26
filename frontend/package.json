@@ -1,10 +1,10 @@
 {
-  "name": "wd-m1-ui",
+  "name": "wd-h1-ui",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:dev": "ng serve --watch --open",
+    "start:dev": "ng server --watch",
     "build": "ng build --prod"
   },
   "private": true,
